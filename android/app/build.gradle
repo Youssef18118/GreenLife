@@ -1,0 +1,78 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader("UTF-8") { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
+if (flutterVersionCode == null) {
+    flutterVersionCode = "1"
+}
+
+def flutterVersionName = localProperties.getProperty("flutter.versionName")
+if (flutterVersionName == null) {
+    flutterVersionName = "1.0"
+}
+
+android {
+    namespace "com.example.plant_app"
+    compileSdk 34
+    ndkVersion "25.1.8937393"
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId  "com.example.plant_app"
+        minSdk 23
+        targetSdk flutter.targetSdkVersion
+        versionCode flutterVersionCode.toInteger()
+        versionName  flutterVersionName
+        multiDexEnabled true
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.debug
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.0"
+    implementation "androidx.fragment:fragment:1.7.0" 
+    implementation "androidx.lifecycle:lifecycle-livedata-core-ktx:2.7.0" 
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0" 
+    implementation 'com.google.firebase:firebase-auth-ktx:22.0.0' 
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2" 
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
+    implementation 'androidx.window:window:1.0.0'
+    implementation 'androidx.window:window-java:1.0.0'
+
+}
+
+
+configurations.all {
+    resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib:1.9.0'
+    resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.0'
+}
